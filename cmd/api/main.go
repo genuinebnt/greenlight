@@ -10,6 +10,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/genuinebnt/greenlight/internal/data"
 	_ "github.com/lib/pq"
 )
 
@@ -19,7 +20,7 @@ type config struct {
 	port int
 	env  string
 	db   struct {
-		dsn string
+		dsn         string
 		maxOpenConn int
 		maxIdleConn int
 		maxIdleTime time.Duration
@@ -29,6 +30,7 @@ type config struct {
 type application struct {
 	config config
 	logger *slog.Logger
+	models data.Models
 }
 
 func main() {
@@ -57,6 +59,7 @@ func main() {
 	app := &application{
 		config: cfg,
 		logger: logger,
+		models: data.NewModel(db),
 	}
 
 	srv := &http.Server{
