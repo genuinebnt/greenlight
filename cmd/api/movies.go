@@ -94,8 +94,8 @@ func (app *application) UpdateMovieHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	if r.Header.Get("X-Expected_Version") != "" {
-		if strconv.Itoa(int(movie.Version)) != r.Header.Get("X-Expected_Version") {
+	if r.Header.Get("X-Expected-Version") != "" {
+		if strconv.Itoa(int(movie.Version)) != r.Header.Get("X-Expected-Version") {
 			app.editConflictResponse(w, r)
 			return
 		}
