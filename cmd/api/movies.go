@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/genuinebnt/greenlight/internal/data"
 	"github.com/genuinebnt/greenlight/internal/validator"
@@ -91,6 +92,13 @@ func (app *application) UpdateMovieHandler(w http.ResponseWriter, r *http.Reques
 			app.serverErrorResponse(w, r, err)
 		}
 		return
+	}
+
+	if r.Header.Get("X-Expected_Version") != "" {
+		if strconv.Itoa(int(movie.Version)) != r.Header.Get("X-Expected_Version") {
+			app.editConflictResponse(w, r)
+			return
+		}
 	}
 
 	var input struct {
